@@ -1,0 +1,7 @@
+Child exit of process id:  30716, command: gedit &
+Child exit of process id:  30744, command: gedit &
+Child exit of process id:  30768, command: gedit &
+Child exit of process id:  30792, command: gedit &
+Child exit of process id:  30946, command: gedit &
+Child exit of process id:  8849, command: ps
+Child exit of process id:  9135, command: ps

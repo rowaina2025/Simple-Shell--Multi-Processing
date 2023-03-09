@@ -1,0 +1,5 @@
+Child exit of process id:  38525, command: firefox &
+Child exit of process id:  52176, command: ls
+Child exit of process id:  52265, command: gedit &
+Child exit of process id:  52277, command: gedit &
+Child exit of process id:  5987, command: ps

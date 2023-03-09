@@ -1,0 +1,8 @@
+# ninja log v5
+1	45	1678340060230124103	CMakeFiles/lab1.dir/c_codes/utilities.c.o	6757abc5586a39fa
+1	50	1678340060242124066	CMakeFiles/lab1.dir/c_codes/lab1.c.o	e26f85f26acf9cdc
+50	99	1678340060294123903	lab1	e486cff9be968ce0
+1	55	1678191206054800119	CMakeFiles/lab1.dir/lab1.c.o	2ac8feefc26b5acb
+0	30	1678361859104806454	build.ninja	ddeaa9da4469456d
+1	39	1678191206038796543	CMakeFiles/lab1.dir/utilities.c.o	1f09850425817ad3
+1	46	1678289418822729121	CMakeFiles/lab1.dir/c_codes/shell.c.o	24ae36d0e800cc6e
