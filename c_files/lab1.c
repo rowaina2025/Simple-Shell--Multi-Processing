@@ -4,10 +4,11 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#include "../h_files/utilities.h"
 #include <libgen.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include "../h_files/utilities.h"
+#include "../h_files/builtin_shell.h"
 
 #define MAX_SIZE 200
 
@@ -56,7 +57,6 @@ void execute_command() {
     int status;
     if(pid == 0) {
         if(command == BACKGROUND) command_list[word_count - 1] = NULL;
-        execvp(command_list[0], command_list);
         if (execvp(command_list[0], command_list) == -1) {
             perror("no such system call");
             exit(1);
@@ -77,110 +77,16 @@ void execute_command() {
     }
 }
 
-
-/**
- * change directory built-in function
- */
-void cd() {
-    pid_t pid = fork();
-    char path[100];
-    int status;
-    if(pid == 0) {
-        if(word_count == 1 || strcmp(command_list[1], "~") == 0) {
-            chdir("/home");
-            printf("%s\n", getcwd(NULL, 0));
-        }
-        if(strcmp(command_list[1], ".") == 0 || strcmp(command_list[1], "..") == 0) {
-            chdir(command_list[1]);
-            printf("%s\n", getcwd(NULL, 0));
-        } else {
-            chdir(command_list[1]);
-            printf("%s\n", getcwd(path, sizeof(path)));
-        }
-    } else if(pid > 0) {
-        // wait for the child process to terminate
-        if (waitpid(pid, &status, 0) == -1) {
-            perror("waitpid"); // handle error
-            exit(1);
-        }
-    } else {
-        printf("process not generated successfully"); // handle error
-        return;
-    }
-}
-
-/**
- * export built-in function
- */
-void export() {
-    //extract value name to be stored
-    char name[MAX_SIZE], value[MAX_SIZE];
-    extract_export_name(command_list[1], name);
-    extract_export_value(input_cmd, value);
-    if(setenv(name, value, 1) != 0) {
-        printf("sentenv Error");
-        return;
-    }
-    printf("Environment variable %s set to %s\n", name, getenv(name));
-}
-
-/**
- *  echo built-in function
- */
-void echo() {
-    //prints the words input by the user
-    for(int i = 1; i < word_count; i++) {
-        printf("%s ", command_list[i]);
-    }
-    printf("\n");
-}
-
-/**
- * remove dollar signs and double quotes for command to be ready for execution
- */
-void evaluate_expression() {
-    if(command == ECHO) {
-        //Remove the double quotes
-        memmove(command_list[1], command_list[1] + 1, strlen(command_list[1]));
-        for(int i = 0; i < MAX_SIZE; i++) {
-            if(command_list[word_count - 1][i] == '\"') {
-                command_list[word_count - 1][i] = '\0';
-                break;
-            }
-        }
-    }
-    bool has_dollar = false;
-    // evaluate $ sign
-    for(int i = 0; i < word_count; i++) {
-        if(command_list[i][0] == '$') {
-            memmove(command_list[1], command_list[1] + 1, strlen(command_list[1]));
-            strcpy(command_list[i], getenv(command_list[i]));
-            has_dollar = true;
-            break;
-        }
-    }
-    if(command != ECHO && has_dollar) {
-        char temp[MAX_SIZE], *_temp[MAX_SIZE];
-        strcpy(temp, command_list[1]);
-        int num = parse_command(command_list[1], _temp, " ");
-        word_count = num + 1;
-        for(int i = 0; i < num; i++) {
-            command_list[i + 1] = _temp[i];
-        }
-        word_count = num + 1;
-    }
-}
-
 void execute_shell_bultin() {
     switch (command) {
         case CD:
-            cd();
+            cd(command_list[1], word_count);
             break;
         case EXPORT:
-            export();
+            export(command_list[1], input_cmd);
             break;
         case ECHO:
-            echo();
+            echo(command_list, word_count);
             break;
         case BACKGROUND:
             execute_command();
@@ -203,13 +109,22 @@ void shell() {
         strcpy(input_cmd, temp_input_cmd);
         // parse it and count its words
         word_count = parse_command(temp_input_cmd, command_list, " ");
-        // assign enum values
+        // set command state
         if(word_count > 1 && strcmp(command_list[word_count - 1], "&") == 0)
-            setEnum(command_list[word_count - 1], &command, word_count);
+            set_process(command_list[word_count - 1], &command, word_count);
         else
-            setEnum(command_list[0], &command, word_count);
-        // Remove $ and "" in echo
-        evaluate_expression();
+            set_process(command_list[0], &command, word_count);
+        // Remove "" echo
+        if(command == ECHO && command_list[1][0] == '"')
+            remove_double_quotes(command_list, word_count, MAX_SIZE);
+        // remove $
+        word_count = evaluate_expression(input_cmd, command_list, word_count, MAX_SIZE);
+        //Save the state of the whole input line
+        strcpy( temp_input_cmd, input_cmd);
+        // reset variables to be ready for the next input from the user
+        memset(command_list, '\0', sizeof(command_list));
+        // parse it and count its words
+        word_count = parse_command(temp_input_cmd, command_list, " ");
         // Built-in or command ??
         if(is_built_in(command) == true)
             execute_shell_bultin();
@@ -221,7 +136,7 @@ void shell() {
 }
 
 int main(int argc, char *argv[]) {
-    // set up the signal handler for 'SIGCHLD' signal generated by the child process 'SIGCHLD' signal sent from chile to parent when child terminates avoiding zombie processes
+    // Assign SIGCHLD signal
     signal(SIGCHLD, on_child_exit);
     setup_environment(argv[0]);
     shell();

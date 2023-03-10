@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include "../h_files/utilities.h"
 
-char *filename = "t.txt";
+char *filename = "log";
 
 /**
  * function that takes input from the user
@@ -54,7 +54,7 @@ int parse_command(char* command, char** command_list, char *separator) {
  * @param words_count number of words of input instruction
  * @return void function
  */
-void setEnum(char *command, enum Commands *prog_command, int words_count) {
+void set_process(char *command, enum Commands *prog_command, int words_count) {
     if(strcmp(command, "exit") == 0) {
         *prog_command = EXIT;
     } else if(strcmp(command, "echo") == 0) {
@@ -85,6 +85,36 @@ bool is_built_in(enum Commands command) {
     else
         return false;
 }
+
+void remove_double_quotes(char *command_list[], int word_count, int MAX_SIZE) {
+    if(command_list[1][0] != '"') return;
+    memmove(command_list[1], command_list[1] + 1, strlen(command_list[1]));
+    for(int i = 0; i < MAX_SIZE; i++) {
+        if(command_list[word_count - 1][i] == '\"') {
+            command_list[word_count - 1][i] = '\0';
+            break;
+        }
+    }
+}
+
+/**
+ * remove dollar signs and double quotes for command to be ready for execution
+*/
+int evaluate_expression(char *input_cmd, char *command_list[], int word_count, int MAX_SIZE) {
+    // evaluate $ sign
+    char temp_input_cmd[MAX_SIZE];
+    for(int i = 0; i < word_count; i++) {
+        if(command_list[i][0] == '$') {
+            memmove(command_list[i], command_list[i] + 1, strlen(command_list[i]));
+            strcat(temp_input_cmd, getenv(command_list[i]));
+        } else {
+            strcat(temp_input_cmd, command_list[i]);
+        }
+        if(i != word_count - 1) strcat(temp_input_cmd, " ");
+    }
+    strcpy(input_cmd, temp_input_cmd);
+}
+
 
 /**
  * logs the child termination in text file
