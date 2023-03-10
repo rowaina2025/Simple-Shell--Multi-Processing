@@ -2,7 +2,7 @@
 Simple shell developed with `C language`. 
 [![termial_demo](https://i.postimg.cc/RhdJ3BYh/termial1.jpg)](https://postimg.cc/QKBdPRhZ)
 ## System Requirements
-This shell application has been tested on **Ubuntu 22.04**. However, it should work on any Unix-like operating system.
+This shell application has been tested on **Ubuntu 22.04**. However, it should work on any Linux-like operating system.
 ## How to use
 Since the code is divided into three files you have to follow those steps in system terminal:
 1. Navigate to the directory that contains the source files (c_files directory) in the terminal using the cd command:
