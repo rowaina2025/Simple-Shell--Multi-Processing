@@ -61,9 +61,9 @@ void export(char *command, char *input_cmd) {
  *  echo built-in function
  */
 void echo(char *command_list[], int word_count) {
-//    //prints the words input by the user
-//    for(int i = 1; i < word_count; i++) {
-//        printf("%s ", command_list[i]);
-//    }
-//    printf("\n");
+    //prints the words input by the user
+    for(int i = 1; i < word_count; i++) {
+        printf("%s ", command_list[i]);
+    }
+    printf("\n");
 }
