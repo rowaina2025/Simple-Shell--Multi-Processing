@@ -26,3 +26,38 @@ $ ./<the_chosen_name>
 Now the terminal is running the program!
 #### Another way to run it:
 You can however run the program in the IDE terminal, for example `CLion` which was used to test the program during the development.
+## Commands Supported:
+#### Executable commands in the system:
+1. The internal shell command "exit" which terminates the shell
+2. Commands with no arguments, for exmaple: `ls, cp, rm, pwd`
+3. Commands with arguments, for example `ls -l -s`.
+
+#### Built-in:
+1. Commands with or without arguments, executed in the backgrounf using `&`, example `gedit & ` 
+2. **cd** changes directory:
+    * cd
+    * cd ~
+    * cd ..
+    * cd absolute_path
+    * cd relative_path_to_current_working_directory
+3. **echo** Prints the input after evaluating all expressions:
+    * echo "Hello" => Hello
+    * export x=5
+    * echo "Hello $x" => Hello 5
+4. **export** Set values to variables and print variables values:
+    Details: Accepts input of two forms, either a string without spaces, or a full string inside double quotations. No mathematical operations are supported.
+    * export x=-l
+    * ls $x => Will perform ls -l
+    * export y="Hello world"
+    * echo "$y" => Hello world
+## System calls used:
+- **execvp()**
+- **waitpid()**
+- **fork()**
+- **exit()**
+- **chdir()**
+
+> No Zombie Processes can exist as ``'SIGCHLD'`` signal is assigned at the baginning of the program which interrups the parent process to kill that child on termination.
+
+##### Thank you for taking the time to read this README file!  
+
