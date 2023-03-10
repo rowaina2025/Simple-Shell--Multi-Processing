@@ -12,7 +12,7 @@ $ cd /path/to/source/c_files
 ```
 $ gcc -c lab.c
 $ gcc -c utilities.c
-$ gcc -c builtin_shell
+$ gcc -c builtin_shell.c
 ```
 3. Link the object files together using the C compiler with the -o option to create an executable file:
 ```
