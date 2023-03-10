@@ -1,6 +1,6 @@
 # Simple shell application (Multi-processing)
 Simple shell developed with `C language`. 
-![Application_Demo](home/CSED/OS/terminal1.png)
+[![termial_demo](https://i.postimg.cc/RhdJ3BYh/termial1.jpg)](https://postimg.cc/QKBdPRhZ)
 ## System Requirements
 This shell application has been tested on Ubuntu 22.04. However, it should work on any Unix-like operating system.
 ## How to use
@@ -23,6 +23,6 @@ $ gcc -o <any_chosen_name> lab1.o utilities.o builtin_shell.o
 ```
 $ ./<the_chosen_name>
 ```
-###### Now the terminal is running the program!
+Now the terminal is running the program!
 #### Another way to run it:
 You can however run the program in the IDE terminal, for example `CLion` which was used to test the program during the development.
