@@ -59,5 +59,5 @@ You can however run the program in the IDE terminal, for example `CLion` which w
 
 > No Zombie Processes can exist as ``'SIGCHLD'`` signal is assigned at the baginning of the program which interrups the parent process to kill that child on termination.
 
-##### Thank you for taking the time to read this README file  :-) !  
+##### Thank you for taking the time to read this README file!  
 
