@@ -37,9 +37,7 @@ void setup_environment(char *prog_dir) {
         printf("Current working directory: %s\n", getcwd(NULL, 0));
 }
 
-/**
- * Assigns signal to children on child termination to be killed
- */
+// Assigns signal to children on child termination to be killed
 void on_child_exit() {
     int wstat;
     pid_t	pid;
@@ -49,9 +47,7 @@ void on_child_exit() {
     }
 }
 
-/**
- * execute system command with system call execvp()
- */
+// execute system command with system call execvp()
 void execute_command() {
     pid_t pid = fork();
     int status;
@@ -98,9 +94,7 @@ void execute_shell_bultin() {
     }
 }
 
-/**
- * Contains the main loop that repeats itself in each command
- */
+// Contains the main loop that repeats itself in each command
 void shell() {
     do {
         // take input form user
