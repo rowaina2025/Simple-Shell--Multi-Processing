@@ -10,10 +10,6 @@
 
 #define MAX_SIZE 200
 
-
-/**
- * change directory built-in function
- */
 void cd(char* path, int word_count) {
     pid_t pid = fork();
     char _path[MAX_SIZE];
@@ -42,9 +38,6 @@ void cd(char* path, int word_count) {
     }
 }
 
-/**
- * export built-in function
- */
 void export(char *command, char *input_cmd) {
     //extract value name to be stored
     char name[MAX_SIZE], value[MAX_SIZE];
@@ -57,9 +50,6 @@ void export(char *command, char *input_cmd) {
     printf("Environment variable %s set to %s\n", name, getenv(name));
 }
 
-/**
- *  echo built-in function
- */
 void echo(char *command_list[], int word_count) {
     //prints the words input by the user
     for(int i = 1; i < word_count; i++) {
