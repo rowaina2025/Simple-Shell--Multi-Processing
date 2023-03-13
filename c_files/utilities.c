@@ -97,9 +97,7 @@ void remove_double_quotes(char *command_list[], int word_count, int MAX_SIZE) {
     }
 }
 
-/**
- * remove dollar signs and double quotes for command to be ready for execution
-*/
+// Remove dollar signs and double quotes for command to be ready for execution
 int evaluate_expression(char *input_cmd, char *command_list[], int word_count, int MAX_SIZE) {
     // evaluate $ sign
     char temp_input_cmd[MAX_SIZE];
@@ -115,10 +113,7 @@ int evaluate_expression(char *input_cmd, char *command_list[], int word_count, i
     strcpy(input_cmd, temp_input_cmd);
 }
 
-
-/**
- * logs the child termination in text file
- */
+// Logs the child termination in text file 
 void lg(char *command, int pid) {
     FILE *fp = fopen(filename, "a");
     if (fp == NULL)
@@ -130,9 +125,7 @@ void lg(char *command, int pid) {
     fclose(fp);
 }
 
-/**
- * extract value form export expression
-*/
+// Extract value form export expression
 void extract_export_value(char *command, char *value) {
     char dummy[100];
     if (sscanf(command, "export %[^=]=\"%[^\n]\"", dummy, value) != 2) {
@@ -142,9 +135,7 @@ void extract_export_value(char *command, char *value) {
     value[len - 1] = '\0';
 }
 
-/**
- * extract name of variable form export expression
-*/
+// Extract name of variable form export expression
 void extract_export_name(char *expression, char *name) {
     // Split the string at the '=' character
     char temp_expression[200];
